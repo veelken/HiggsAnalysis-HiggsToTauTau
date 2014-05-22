@@ -70,6 +70,7 @@ def cross_section(process, mass, ecms) :
                 xs = xsquery['higgses']['A']['xsec']['santander']
             elif "ggA" in process :
                 xs = xsquery['higgses']['A']['xsec']['ggF']
+    ##print "<cross_section>: process = %s, mass = %s, ecms = %s, xs = %1.4f" % (process, mass, ecms, xs)
     return xs
 
 def digit(x) :
@@ -281,7 +282,8 @@ def extractor(path, period):
                 passed_rate_line = True
                 rate_bkg = values[range_sig:]
                 rate_sig = values[1:range_sig]
-                continue
+                ##print "rate_sig = %s" % rate_sig
+                continue            
             ## UNCERTAINTIES (add all relevant uncertainties for signal and backgrounds in
             ## quadrature; there is a special treatment for gmN, shapes are skipped)
             if passed_rate_line and values[0] not in ignore_line:
@@ -327,7 +329,9 @@ def extractor(path, period):
         if options.analysis == "mssm" or options.analysis == "mssm_taupt":
             for i in range(0, len(rate_sig)) :
                 rate_sig[i] = float(rate_sig[i])
-            rate_sig_summed = xsec["ggH"]*BR*rate_sig[0] + xsec["bbH"]*BR*rate_sig[1]
+            ##print "xsec['ggH'] = %1.4f, rate['ggH'] = %1.4f, xsec['bbH'] = %1.4f, rate['bbH'] = %1.4f, BR = %1.4f" % (xsec["ggH"], rate_sig[0], xsec["bbH"], rate_sig[1], BR)
+            rate_sig_summed += (xsec["ggH"]*BR*rate_sig[0] + xsec["bbH"]*BR*rate_sig[1])
+            ##print "--> rate_sig_summed = %1.4f" % rate_sig_summed
         else : 
             for i in range(0, len(rate_sig)):
                 rate_sig[i] = float(rate_sig[i])
